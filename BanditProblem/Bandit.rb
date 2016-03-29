@@ -71,7 +71,7 @@ class Bandit
     @conf[:arm_num].times do 
       arm_conf = make_default_arm_conf(ave) ;
       @arms.push(Arm.new(arm_conf)) ;
-      ave +=0.1
+      ave +=0.3
     end
   end
 
@@ -100,7 +100,7 @@ end
 #
 if($0 == __FILE__) then
   agent_conf = {} ;
-  agent_conf[:e] = 0.01 ;
+  agent_conf[:e] = 0.001 ;
   agent_conf[:arm_num] = 5 ;
   agent_conf[:average_reward] = 0.0 ;
   agent_conf[:id] = 0 ;
@@ -109,7 +109,7 @@ if($0 == __FILE__) then
   agent = BanditAgent.new(agent_conf) ; 
   bandit=Bandit.new ;
   rewards = []  ;
-  100000.times do |num|
+  10000.times do |num|
     agent_select = agent.e_greedy ;
     reward = bandit.pull_lever(agent_select) ;
     agent.calc_average_reward(reward,num) ;
@@ -119,7 +119,7 @@ if($0 == __FILE__) then
   end
   graph_conf = GenerateGraph.make_default_conf
   GenerateGraph.time_step(rewards, graph_conf)
-
+  makeYamlFile("agent.yml", agent)
 end
 
 
