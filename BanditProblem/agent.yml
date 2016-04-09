@@ -1,5 +1,5 @@
 --- !ruby/object:BanditAgent
-average_reward: 0.8260799999999981
+average_reward: 0.4518599999999979
 id: 0
 a: 0.1
 q_table:
@@ -8,10 +8,10 @@ q_table:
   r: 0.0
 - !ruby/object:BanditAgentQ
   id: 1
-  r: 0.056999999999999995
+  r: 0.2999999999999996
 - !ruby/object:BanditAgentQ
   id: 2
-  r: 0.06
+  r: 0.20634
 - !ruby/object:BanditAgentQ
   id: 3
   r: 0.8999999999999994

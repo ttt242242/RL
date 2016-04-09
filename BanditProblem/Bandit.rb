@@ -18,7 +18,6 @@ include MathTool
 class Bandit
   attr_accessor :arms, :conf ;   #書き込み、参照可能
 
-
   #
   # == armクラス
   #
