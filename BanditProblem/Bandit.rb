@@ -99,26 +99,45 @@ end
 #
 if($0 == __FILE__) then
   agent_conf = {} ;
-  agent_conf[:e] = 0.001 ;
+  agent_conf[:e] = 0.05 ;
+  agent_conf[:t] = 0.05 ;
   agent_conf[:arm_num] = 5 ;
   agent_conf[:average_reward] = 0.0 ;
   agent_conf[:id] = 0 ;
   agent_conf[:a] = 0.1 ;
 
-  agent = BanditAgent.new(agent_conf) ; 
+  agent_list = [] ;
+  agent1 = BanditAgent.new(agent_conf) ; 
+  agent_list.push(agent1) ;
+  agent2 = BanditAgent.new(agent_conf) ; 
+  agent_list.push(agent2)
+
   bandit=Bandit.new ;
-  rewards = []  ;
-  10000.times do |num|
-    agent_select = agent.e_greedy ;
-    reward = bandit.pull_lever(agent_select) ;
-    agent.calc_average_reward(reward,num) ;
-    agent.update_q(agent_select,reward) ;
-    rewards.push(reward) ;
+  # rewards = []  ;
+  rewards_list = [] ;
+
+  500.times do |num|
+    agent_list.each_with_index do |agent, i|
+      rewards_list[i] = [] if rewards_list[i].nil?
+      if i == 0
+        agent_select = agent.softmax ;
+      else
+        agent_select = agent.e_greedy ;
+      end
+      reward = bandit.pull_lever(agent_select) ;
+      agent.calc_average_reward(reward,num) ;
+      agent.update_q(agent_select,reward) ;
+      rewards_list[i].push(agent.average_reward) ;
+    end
     # p "#{agent_select}, #{reward}"
   end
   graph_conf = GenerateGraph.make_default_conf
-  GenerateGraph.time_step(rewards, graph_conf)
-  makeYamlFile("agent.yml", agent)
+  graph_conf[:graph_title] = [] ;
+  graph_conf[:graph_title][0] = "softmax"
+  graph_conf[:graph_title][1] = "epsilon"
+  # GenerateGraph.time_step(rewards, graph_conf)
+  GenerateGraph.list_time_step(rewards_list, graph_conf)
+  makeYamlFile("agent.yml", rewards_list)
 end
 
 
