@@ -16,12 +16,12 @@ include BasicTool
 class BaseAgent 
   attr_accessor :id, :average_reward, :a, :q_table ;
   def initialize(agent_conf = nil)
-    if agent_conf == nil
+
     @average_reward = 0.0 ;
+    if agent_conf == nil
     @id = agent_conf[:id] ;
     @a = agent_conf[:a] ;
     else
-      @average_reward = agent_conf[:average_reward] ;
       @id = agent_conf[:id] ;
       @a = agent_conf[:a] ;
     end
